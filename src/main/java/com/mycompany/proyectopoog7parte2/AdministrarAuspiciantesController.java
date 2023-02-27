@@ -18,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import utils.AlertGenerator;
 
 
 public class AdministrarAuspiciantesController{
@@ -87,44 +88,24 @@ public class AdministrarAuspiciantesController{
 
 
     private void eliminarAuspiciante(Auspiciante au){
-
-
         try{
-        Alert alerta = new Alert(Alert.AlertType.WARNING,"Recuerde que esta acción es irreversible. \n¿Seguro que desea continuar?");
-        
-        alerta.setHeaderText("Eliminacion de auspiciante");
-        alerta.showAndWait();
-        
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setHeaderText("Eliminacion");
-        confirmacion.setContentText("Se procederá a eliminar al auspiciante de los registros.\n ¿Continuar?");
+            Alert confirmacion = AlertGenerator.generateAlert(Alert.AlertType.CONFIRMATION,null,"Eliminacion","Se procederá a eliminar al auspiciante de los registros.\n ¿Continuar?");
 
+            Optional<ButtonType> result = confirmacion.showAndWait();
+            if(result.get()==ButtonType.OK){
+                ArrayList<Auspiciante> lista = Auspiciante.cargarListaAuspiciantes();
+                lista.remove(lista.indexOf(au)); 
 
-        Optional<ButtonType> result = confirmacion.showAndWait();
-        if(result.get()==ButtonType.OK){
-            ArrayList<Auspiciante> lista = Auspiciante.cargarListaAuspiciantes();
-            System.out.println(lista.contains(au));
-            int indice = lista.indexOf(au);
-            System.out.println(lista);
-            System.out.println(indice);
-            lista.remove(indice); 
-            System.out.println(lista);
+                Auspiciante.actualizarListaAuspiciantes(lista);
+                App.setRoot("administrarAuspiciantes");
+            }
             
-            //Se actualiza el archivo
-            Auspiciante.actualizarListaAuspiciantes(lista);
-            System.out.println("Se ha eliminado al auspiciante: "+au.getNombre());
-            App.setRoot("administrarAuspiciantes");
+            }catch(IOException e){
+                System.out.println("Error al eliminar el auspiciante: "+e.getLocalizedMessage());
+                e.printStackTrace();
+                e.getCause();
 
-
-        }else{
-            System.out.println("No problem");
-        }
-        }catch(Exception e){
-            System.out.println("Error al eliminar el auspiciante: "+e.getLocalizedMessage());
-            e.printStackTrace();
-            e.getCause();
-           
-        }     
+            }     
     }
     
     
