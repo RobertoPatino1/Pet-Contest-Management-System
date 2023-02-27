@@ -26,6 +26,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import utils.AlertGenerator;
 import utils.Correo;
 
 
@@ -103,68 +104,32 @@ public class AdministrarConcursoController{
     
     
     private void eliminarConcurso(Concurso c){
-        Date d = new Date();
-        if(c.getFechaEvento().after(d)){
+        try{
+            Alert confirmacion = AlertGenerator.generateAlert(Alert.AlertType.CONFIRMATION,null,"Eliminacion","Se procederá a eliminar al concurso de los registros.\n ¿Continuar?");
+            Optional<ButtonType> result = confirmacion.showAndWait();
+            if(result.get()==ButtonType.OK){
+                ArrayList<Concurso> lista = Concurso.cargarListaConcursos();
+                int indice = lista.indexOf(c);
+                lista.remove(indice); 
+                ArrayList<Concurso> l = lista;
+                Concurso.actualizarListaConcursos(l);
+                App.setRoot("administrarConcurso");
 
-                try{
-                    Alert alerta = new Alert(Alert.AlertType.WARNING,"Recuerde que esta acción es irreversible. \n¿Seguro que desea continuar?");
+            }
+            }catch(Exception e){
+                System.out.println("Error al eliminar el concurso: "+e.getLocalizedMessage());
+                e.printStackTrace();
+                e.getCause();
 
-                    alerta.setHeaderText("Eliminacion de concurso");
-                    alerta.showAndWait();
-
-                    Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmacion.setHeaderText("Eliminacion");
-                    confirmacion.setContentText("Se procederá a eliminar al concurso de los registros.\n ¿Continuar?");
-
-
-                    Optional<ButtonType> result = confirmacion.showAndWait();
-                    if(result.get()==ButtonType.OK){
-                        //Se obtiene la lista de duenios
-                        ArrayList<Concurso> lista = Concurso.cargarListaConcursos();
-                        System.out.println(lista.contains(c));
-
-                        //Se obtiene el indice del duenio a eliminar
-                        int indice = lista.indexOf(c);
-                        System.out.println(lista);
-                        System.out.println(indice);
-
-                        //Se elimina al auspiciante en el indice obtenido
-                        lista.remove(indice); 
-                        System.out.println(lista);
-                        ArrayList<Concurso> l = lista;
-                        //Se actualiza el archivo
-                        Concurso.actualizarListaConcursos(l);
-                        System.out.println("Se ha eliminado al concurso: "+c.getNombre());
-                        
-                        System.out.println(lista);
-                        App.setRoot("administrarConcurso");
-
-                    }else{
-                        System.out.println("No problem");
-                    }
-                    }catch(Exception e){
-                        System.out.println("Error al eliminar el concurso: "+e.getLocalizedMessage());
-                        e.printStackTrace();
-                        e.getCause();
-           
-                    }    
-        }else{
-            //El concurso ya paso y no se puede eliminar
-            
-            System.out.println("El concuros ya paso y no se puede eliminar");
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setHeaderText("Error al eliminar el concurso");
-            error.setContentText("Este concurso no puede ser eliminado\n porque ya paso su fecha de inicio");
-            error.show();
-        }
+            }    
+        
     }
     
     
     
     
     private void enviarInvitaciones(Concurso c){
-        
-        System.out.println("Se estan enviando correos a todos los usuarios");        
+             
         send(c);
 
         ArrayList<Concurso> listaConcurso = Concurso.cargarListaConcursos();
@@ -174,7 +139,7 @@ public class AdministrarConcursoController{
         try{
         App.setRoot("administrarConcurso");
         }catch(IOException e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
     

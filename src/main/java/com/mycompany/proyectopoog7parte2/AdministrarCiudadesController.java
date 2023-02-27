@@ -17,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import utils.AlertGenerator;
 
 public class AdministrarCiudadesController{
 
@@ -121,40 +122,17 @@ public class AdministrarCiudadesController{
     
     private void eliminarCiudad(Ciudad c) {
 
-        
-        //Primero se muestra la alerta
         try{
-        Alert alerta = new Alert(Alert.AlertType.WARNING,"Recuerde que esta acción es irreversible. \n¿Seguro que desea continuar?");
-        
-        alerta.setHeaderText("Eliminacion de ciudad");
-        alerta.showAndWait();
-        
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setHeaderText("Eliminacion");
-        confirmacion.setContentText("Se procederá a eliminar la ciudad de los registros.\n ¿Continuar?");
+            Alert confirmacion = AlertGenerator.generateAlert(Alert.AlertType.CONFIRMATION,null,"Eliminacion","Se procederá a eliminar la ciudad de los registros.\n ¿Continuar?");
 
-        
-
-
-        Optional<ButtonType> result = confirmacion.showAndWait();
-        if(result.get()==ButtonType.OK){
-            //Se elimina el objeto de la lista
-            ArrayList<Ciudad> lista = Ciudad.cargarCiudades();
-            System.out.println(lista.contains(c));
-            int indice = lista.indexOf(c);
-            System.out.println(lista);
-            System.out.println(indice);
-            lista.remove(indice); 
-            
-            //Se actualiza el archivo
-            Ciudad.actualizarListaCiudades(lista);
-            System.out.println("Se ha eliminado la ciudad: "+c);
-            App.setRoot("administrarCiudades");
-
-
-        }else{
-            System.out.println("No problem");
-        }
+            Optional<ButtonType> result = confirmacion.showAndWait();
+            if(result.get()==ButtonType.OK){
+                ArrayList<Ciudad> lista = Ciudad.cargarCiudades();
+                int indice = lista.indexOf(c);
+                lista.remove(indice);           
+                Ciudad.actualizarListaCiudades(lista);
+                App.setRoot("administrarCiudades");
+            }
         }catch(Exception e){
             System.out.println("Error al eliminar la ciudad: "+e.getLocalizedMessage());
             e.printStackTrace();

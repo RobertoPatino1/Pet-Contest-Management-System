@@ -19,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import utils.AlertGenerator;
 
 public class AdministrarMascotasController{
 
@@ -94,43 +95,24 @@ public class AdministrarMascotasController{
     private void eliminarMascota(Mascota m){
 
         try{
-        Alert alerta = new Alert(Alert.AlertType.WARNING,"Recuerde que esta acción es irreversible. \n¿Seguro que desea continuar?");
-        
-        alerta.setHeaderText("Eliminacion de mascota");
-        alerta.showAndWait();
-        
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setHeaderText("Eliminacion");
-        confirmacion.setContentText("Se procederá a eliminar la mascota de los registros.\n ¿Continuar?");
-        
-        Optional<ButtonType> result = confirmacion.showAndWait();
-        if(result.get()==ButtonType.OK){
+            Alert confirmacion = AlertGenerator.generateAlert(Alert.AlertType.CONFIRMATION,null,"Eliminacion","Se procederá a eliminar a la mascota de los registros.\n ¿Continuar?");
 
-            ArrayList<Mascota> lista = Mascota.cargarMascotas();
-            System.out.println(lista.contains(m));
-            
+            Optional<ButtonType> result = confirmacion.showAndWait();
+            if(result.get()==ButtonType.OK){
 
-            int indice = lista.indexOf(m);
-            System.out.println(lista);
-            System.out.println(indice);
-            
+                ArrayList<Mascota> lista = Mascota.cargarMascotas();
+                int indice = lista.indexOf(m);
+                lista.remove(indice); 
+                Mascota.actualizarListaMascotas(lista);
+                App.setRoot("administrarMascotas");
+            }
 
-            lista.remove(indice); 
-            System.out.println(lista);
-            
-            
+            }catch(IOException e){
+                System.out.println("Error al eliminar la mascota: "+e.getLocalizedMessage());
+                e.printStackTrace();
 
-            Mascota.actualizarListaMascotas(lista);
-            System.out.println("Se ha eliminado la mascota: "+m.getNombre());
-            App.setRoot("administrarMascotas");
-        }
-        
-        }catch(IOException e){
-            System.out.println("Error al eliminar la mascota: "+e.getLocalizedMessage());
-            e.printStackTrace();
 
-           
-        }     
+            }     
     }
     
 

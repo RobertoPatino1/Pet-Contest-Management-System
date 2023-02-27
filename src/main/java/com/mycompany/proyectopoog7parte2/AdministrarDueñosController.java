@@ -18,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import utils.AlertGenerator;
 
 public class AdministrarDueñosController{
 
@@ -89,42 +90,16 @@ public class AdministrarDueñosController{
     private void eliminarDuenio(DuenioMascota d){
 
         try{
-            Alert alerta = new Alert(Alert.AlertType.WARNING,"Recuerde que esta acción es irreversible. \n¿Seguro que desea continuar?");
 
-            alerta.setHeaderText("Eliminacion de dueño");
-            alerta.showAndWait();
 
-            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmacion.setHeaderText("Eliminacion");
-            confirmacion.setContentText("Se procederá a eliminar el dueño de los registros.\n ¿Continuar?");
-
-        
-        
-
+            Alert confirmacion = AlertGenerator.generateAlert(Alert.AlertType.CONFIRMATION,null,"Eliminacion","Se procederá a eliminar al duño de los registros.\n ¿Continuar?");
             Optional<ButtonType> result = confirmacion.showAndWait();
             if(result.get()==ButtonType.OK){
-                //Se obtiene la lista de duenios
                 ArrayList<DuenioMascota> lista = DuenioMascota.cargarDuenios();
-                System.out.println(lista.contains(d));
-
-                //Se obtiene el indice del duenio a eliminar
                 int indice = lista.indexOf(d);
-                System.out.println(lista);
-                System.out.println(indice);
-
-                //Se elimina al duenio en el indice obtenido
                 lista.remove(indice); 
-                System.out.println(lista);
-
-
-                //Se actualiza el archivo
                 DuenioMascota.actualizarListaDuenios(lista);
-                System.out.println("Se ha eliminado al duenio: "+d.getNombre()+" "+d.getApellidos());
                 App.setRoot("administrarDueños");
-
-
-            }else{
-                System.out.println("No problem");
             }
         }catch(Exception e){
             System.out.println("Error al eliminar el duenio: "+e.getLocalizedMessage());
@@ -138,34 +113,31 @@ public class AdministrarDueñosController{
     
 
     private void agregarOpciones() {
-        Callback<TableColumn<DuenioMascota, Void>, TableCell<DuenioMascota, Void>> cellFactory = new Callback<TableColumn<DuenioMascota, Void>, TableCell<DuenioMascota, Void>>() {
-            @Override
-            public TableCell<DuenioMascota, Void> call(final TableColumn<DuenioMascota, Void> param) {
-                TableCell<DuenioMascota, Void> cell = new TableCell<DuenioMascota, Void>() {
-                   
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-
-                            HBox hbOpciones = new HBox(5);
-
-                            DuenioMascota duenioMascota = getTableView().getItems().get(getIndex());
-                  
-                            Button btnEd = new Button("Editar");
-                            btnEd.setOnAction(e ->editarDuenio(duenioMascota));
-                               
-                            Button btnEl = new Button("Eliminar");
-                            btnEl.setOnAction(e -> eliminarDuenio(duenioMascota));
-                            hbOpciones.getChildren().addAll(btnEd,btnEl);
-                            setGraphic(hbOpciones);
-                        }
+        Callback<TableColumn<DuenioMascota, Void>, TableCell<DuenioMascota, Void>> cellFactory = (final TableColumn<DuenioMascota, Void> param) -> {
+            TableCell<DuenioMascota, Void> cell = new TableCell<DuenioMascota, Void>() {
+                
+                @Override
+                public void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        
+                        HBox hbOpciones = new HBox(5);
+                        
+                        DuenioMascota duenioMascota = getTableView().getItems().get(getIndex());
+                        
+                        Button btnEd = new Button("Editar");
+                        btnEd.setOnAction(e ->editarDuenio(duenioMascota));
+                        
+                        Button btnEl = new Button("Eliminar");
+                        btnEl.setOnAction(e -> eliminarDuenio(duenioMascota));
+                        hbOpciones.getChildren().addAll(btnEd,btnEl);
+                        setGraphic(hbOpciones);
                     }
-                };
-                return cell;
-            }
+                }
+            };
+            return cell;
         };
 
         colOpciones.setCellFactory(cellFactory);
