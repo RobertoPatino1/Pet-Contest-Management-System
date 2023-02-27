@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.proyectopoog7parte2;
 
 import com.mycompany.modelo.DuenioMascota;
 import com.mycompany.modelo.Mascota;
-import com.mycompany.modelo.TipoAnimal;
+import com.mycompany.enums.TipoAnimal;
 import utils.UtilDate;
 import java.io.File;
 import java.io.IOException;
@@ -72,13 +68,9 @@ public class CrearMascotaController{
      */
    
     public void initialize() {
-        //Se oculta el boton de actualizar
         buttonActualizar.setVisible(false);
-        
-        
-        //cbDuenios.getItems().setAll(DuenioMascota.cargarDuenios("archivos/duenosP4.csv"));
-        //Se llena el combo
-        llenarComboDuenioMascota(DuenioMascota.cargarDuenios(App.pathDuenios));
+
+        llenarComboDuenioMascota(DuenioMascota.cargarDuenios());
     }    
     
 
@@ -87,7 +79,7 @@ public class CrearMascotaController{
         //Se debe recuperar la informacion ingresada por el usuario
         try{
             //Se asigna el id
-            int id = Mascota.cargarMascotas("archivos/mascotas.csv").size()+1;
+            int id = Mascota.cargarMascotas().size()+1;
             //System.out.println(id);
             //Se recupera el nombre de la mascota
             String nombreMascota = txtNombreMascota.getText();
@@ -119,7 +111,7 @@ public class CrearMascotaController{
             if(direccionImagen!=null){
                 System.out.println(direccionImagen);
                 Mascota mascota = new Mascota(id, nombreMascota, TipoAnimal.valueOf(tipoMascota), raza, fecha, direccionImagen, duenio);
-                Mascota.escribirMascota(mascota, "archivos/mascotas.csv");
+                Mascota.escribirMascota(mascota);
                 Alert exito = new Alert(Alert.AlertType.INFORMATION, "La mascota ha sido creada de manera exitosa");
                 exito.setTitle("Exito");
                 exito.setHeaderText("Operacion exitosa");
@@ -139,7 +131,7 @@ public class CrearMascotaController{
                     
                     //Se crea el objeto con la imagen default
                     Mascota mascota = new Mascota(id, nombreMascota, TipoAnimal.valueOf(tipoMascota), raza, fecha, "incognito.jpg", duenio);
-                    Mascota.escribirMascota(mascota, "archivos/mascotas.csv");
+                    Mascota.escribirMascota(mascota);
                     App.setRoot("administrarMascotas");
                     
                 }else{
@@ -258,7 +250,7 @@ public class CrearMascotaController{
             System.out.println(mascotaOG);
             
             //Entramos a la lista de mascotas y se accede al objeto con ese indice
-            ArrayList<Mascota> listaMascotas = Mascota.cargarMascotas(App.pathMascotas);
+            ArrayList<Mascota> listaMascotas = Mascota.cargarMascotas();
             
             //Se obtiene la mascota que sera actualizada
             Mascota mascotaActualizar = listaMascotas.get(indice);
@@ -276,7 +268,7 @@ public class CrearMascotaController{
             listaMascotas.set(indice, mascotaActualizar);
             
             //Se actualiza la lista de mascotas
-            Mascota.actualizarListaMascotas(listaMascotas, App.pathMascotas);
+            Mascota.actualizarListaMascotas(listaMascotas);
             
             //Se le muestra un aviso al usuario
             Alert confirmacion = new Alert(Alert.AlertType.INFORMATION,"Recuerde que este cambio no será aplicado a los elementos" +"\n"+"ya registrados en el sistema");

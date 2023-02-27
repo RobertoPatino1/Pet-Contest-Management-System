@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.proyectopoog7parte2;
 
 import com.mycompany.modelo.Auspiciante;
@@ -41,25 +37,19 @@ public class CrearAuspiciantesController {
     
     private Auspiciante auspicianteOG;
 
-    /**
-     * Initializes the controller class.
-     */
+
 
     
     public void initialize() {
-        //Ocultamos el boton de actualizar
         buttonActualizarAuspiciante.setVisible(false);
-       // TODO
-       //Rellenamos el combo box
-       //cbCiudades.getItems().addAll(Ciudad.cargarCiudades("archivos/ciudades.csv"));
-        llenarComboCiudad(Ciudad.cargarCiudades(App.pathCiudades));
+
+        llenarComboCiudad(Ciudad.cargarCiudades());
     }    
 
     @FXML
     private void guardarAuspiciante(ActionEvent event){
         try{
-            //Ahora debemos recuperar los datos que el usuario ingreso en los textBox para luego crear el objeto
-            //Vamos a obtener los datos
+
             String nombre = txtNombre.getText();
             String direccion = txtDireccion.getText();
             String telefono = txtTelefono.getText();
@@ -68,15 +58,12 @@ public class CrearAuspiciantesController {
             String email = txtEmail.getText();
             
             
-            //Ahora debemos obtener el valor de la ciudad
+       
             Ciudad c = (Ciudad) cbCiudades.getValue();
             
-            //Se recupera el valor de la webPage
             String webPage = txtWebpage.getText();
-            //Debemos recuperar el ultimo id
-            int id = Auspiciante.cargarListaAuspiciantes(App.pathAuspiciantes).size()+1;
+            int id = Auspiciante.cargarListaAuspiciantes().size()+1;
             System.out.println(id);
-            //Creamos el objeto
 
             Auspiciante au = new Auspiciante(id, nombre.toUpperCase(), direccion, telefono, c, email, webPage);
             if(au.getNombre().equals("") || au.getDireccion().equals("")||au.getTelefono().equals("")
@@ -84,11 +71,9 @@ public class CrearAuspiciantesController {
                 throw  new NullPointerException();
             }
             if(!au.getTelefono().equals("")){
-                //Validando que solo se ingresen numeros, una vez que se ha validado que este campo no es vacio
                 int num = Integer.valueOf(au.getTelefono()); //Validamos que solo se ingresen numeros
             }
-            //Lo escribimos en la lista
-            Auspiciante.actualizarArchivoAuspiciantes(au, App.pathAuspiciantes);
+            Auspiciante.actualizarArchivoAuspiciantes(au);
             System.out.println("Se ha escrito el auspiciante exitosamente"); //FIXME: DEBEMOS MANDAR UN AVISO DE QUE SE ESCRIBIO
             Alert exito = new Alert(Alert.AlertType.INFORMATION,"El auspiciante ha sido creado de manera exitosa");
             exito.setHeaderText("Creacion de auspiciante");
@@ -120,17 +105,13 @@ public class CrearAuspiciantesController {
     @FXML
     private void actualizarAuspiciante(ActionEvent event) {
         try{
-            //Se recupera el indice del duenio recien creado
             int indice = auspicianteOG.getCodigo()-1;
             System.out.println(auspicianteOG);
             
-            //Entramos a la lista de auspiciantes y se accede al objeto con ese indice
-            ArrayList<Auspiciante> listaAuspiciantes = Auspiciante.cargarListaAuspiciantes(App.pathAuspiciantes);
+            ArrayList<Auspiciante> listaAuspiciantes = Auspiciante.cargarListaAuspiciantes();
             
-            //Se obtiene el auspiciante que sera actualizado
             Auspiciante auspicianteActualizar = listaAuspiciantes.get(indice);
             
-            //Se rellenan los campos
             auspicianteActualizar.setNombre(txtNombre.getText());
             
             auspicianteActualizar.setDireccion(txtDireccion.getText());
@@ -139,7 +120,6 @@ public class CrearAuspiciantesController {
             auspicianteActualizar.setWebPage(txtWebpage.getText());
             
             
-            //Se valida que los campos no esten vacios
             if(auspicianteActualizar.getNombre().equals("") || auspicianteActualizar.getDireccion().equals("")||auspicianteActualizar.getTelefono().equals("")
                 ||auspicianteActualizar.getEmail().equals("")||auspicianteActualizar.getWebPage().equals("")){
                 throw  new NullPointerException();
@@ -150,15 +130,11 @@ public class CrearAuspiciantesController {
             }
             
             System.out.println(auspicianteActualizar);
-            //Se asigna el duenio a la lista
             listaAuspiciantes.set(indice, auspicianteActualizar);
             
-            //Se escribe el auspiciante actualizado en la lista
-            //**************************************************************
-            //Se actualiza la lista de auspiciantes
-            Auspiciante.actualizarListaAuspiciantes(listaAuspiciantes, App.pathAuspiciantes);   
+
+            Auspiciante.actualizarListaAuspiciantes(listaAuspiciantes);   
             
-            //Le mostramos un aviso al usuario
             Alert confirmacion = new Alert(Alert.AlertType.INFORMATION,"Recuerde que este cambio no será aplicado a los elementos" +"\n"+"ya registrados en el sistema");
             confirmacion.setHeaderText("Se ha actualizado el auspiciante de manera exitosa");
             confirmacion.show();
@@ -185,7 +161,6 @@ public class CrearAuspiciantesController {
     
     
     
-    //Metodos de rellenado
     public void llenarComboCiudad(ArrayList<Ciudad> ciudades){
         cbCiudades.getItems().clear();
         ArrayList<Ciudad> listaCiudades = new ArrayList<>();

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.proyectopoog7parte2;
 
 import com.mycompany.modelo.Ciudad;
@@ -45,9 +41,8 @@ public class AdministrarCiudadesController{
         colCiudad.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colProvincia.setCellValueFactory(new PropertyValueFactory<>("provincia"));
         
-        //Se agregan las opciones
         agregarOpciones();
-        tvCiudades.getItems().setAll(Ciudad.cargarCiudades(App.pathCiudades));
+        tvCiudades.getItems().setAll(Ciudad.cargarCiudades());
     }    
 
     @FXML
@@ -61,7 +56,6 @@ public class AdministrarCiudadesController{
     }
     
     
-    //Metodo para agregar los botones a la columna opciones
     private void agregarOpciones() {
 
         Callback<TableColumn<Ciudad, Void>, TableCell<Ciudad, Void>> cellFactory = new Callback<TableColumn<Ciudad, Void>, TableCell<Ciudad, Void>>() {
@@ -106,14 +100,13 @@ public class AdministrarCiudadesController{
     private void editarCiudad(Ciudad c){
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("crearCiudad.fxml"));//no tiene el controlador especificado
-            //CrearCiudadController ct = new CrearCiudadController(); //Recien aqui se esta creando el controlador
             Parent root = (Parent) fxmlLoader.load();
             CrearCiudadController ct = fxmlLoader.getController();
-            fxmlLoader.setController(ct);//se asigna el controlador
+            fxmlLoader.setController(ct);
             
             
             
-            ct.llenarCombo(Ciudad.cargarCiudades("archivos/ciudades.csv"));
+            ct.llenarCombo(Ciudad.cargarCiudades());
             ct.llenarCampos(c);
 
             App.changeRoot(root);
@@ -141,12 +134,12 @@ public class AdministrarCiudadesController{
         confirmacion.setContentText("Se procederá a eliminar la ciudad de los registros.\n ¿Continuar?");
 
         
-        //confirmacion.show();
+
 
         Optional<ButtonType> result = confirmacion.showAndWait();
         if(result.get()==ButtonType.OK){
             //Se elimina el objeto de la lista
-            ArrayList<Ciudad> lista = Ciudad.cargarCiudades("archivos/ciudades.csv");
+            ArrayList<Ciudad> lista = Ciudad.cargarCiudades();
             System.out.println(lista.contains(c));
             int indice = lista.indexOf(c);
             System.out.println(lista);
@@ -154,7 +147,7 @@ public class AdministrarCiudadesController{
             lista.remove(indice); 
             
             //Se actualiza el archivo
-            Ciudad.actualizarListaCiudades(lista, "archivos/ciudades.csv");
+            Ciudad.actualizarListaCiudades(lista);
             System.out.println("Se ha eliminado la ciudad: "+c);
             App.setRoot("administrarCiudades");
 

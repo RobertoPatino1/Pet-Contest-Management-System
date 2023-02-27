@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.proyectopoog7parte2;
 
 import com.mycompany.modelo.Auspiciante;
@@ -28,13 +24,11 @@ public class AniadirPremioController{
     private ComboBox<Auspiciante> cbAuspiciante;
     @FXML
     private Label lblAniadirPremio;
-    /**
-     * Initializes the controller class.
-     */
+   
   
     public void initialize() {
         //Se asignan los valores al combo
-        cbAuspiciante.getItems().setAll(Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser"));
+        cbAuspiciante.getItems().setAll(Auspiciante.cargarListaAuspiciantes());
     }    
     
     @FXML

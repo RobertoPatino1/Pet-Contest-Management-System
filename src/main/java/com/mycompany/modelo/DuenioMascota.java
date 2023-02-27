@@ -1,5 +1,6 @@
 package com.mycompany.modelo;
 
+import com.mycompany.proyectopoog7parte2.App;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -13,7 +14,7 @@ public class DuenioMascota extends Persona implements Serializable{
     private static final long serialVersionUID = -3459389148250017616L;
     private String apellidos;
 
-    //Constructor que inicializa todos los atributos
+    
     public DuenioMascota(int id,String apellidos, String nombre, String direccion, String telefono, Ciudad ciudad, String email){
         super(nombre, direccion, telefono, ciudad, email); //Llamando las variables de la clase padre Persona
         this.id = id;
@@ -22,7 +23,7 @@ public class DuenioMascota extends Persona implements Serializable{
     }
     
  
-    //Getters
+    
     public String getNombre(){
         return nombre;
     }
@@ -45,7 +46,7 @@ public class DuenioMascota extends Persona implements Serializable{
         return apellidos;
     }
     
-    //Setters
+    
     
     public void setApellidos(String apellidos){
         this.apellidos=apellidos;
@@ -56,16 +57,16 @@ public class DuenioMascota extends Persona implements Serializable{
     }
     
    
-    public static ArrayList<DuenioMascota> cargarDuenios(String ruta){
+    public static ArrayList<DuenioMascota> cargarDuenios(){
     ArrayList<DuenioMascota> duenios = new ArrayList<>();
 
-    try(BufferedReader bf = new BufferedReader(new FileReader(ruta))){
+    try(BufferedReader bf = new BufferedReader(new FileReader(App.pathDuenios))){
         String linea;
         while((linea=bf.readLine())!=null){
 
             String[] datos = linea.strip().split(",");
 
-            DuenioMascota d = new DuenioMascota(Integer.valueOf(datos[0]),datos[1],datos[2],datos[3],datos[4],new Ciudad(datos[5]),datos[6]);
+            DuenioMascota d = new DuenioMascota(Integer.parseInt(datos[0]),datos[1],datos[2],datos[3],datos[4],new Ciudad(datos[5]),datos[6]);
             duenios.add(d);
 
 
@@ -92,11 +93,10 @@ public class DuenioMascota extends Persona implements Serializable{
     }
     
         
-    public static void escribirDuenio(DuenioMascota d, String path){
-        try(BufferedWriter fw = new BufferedWriter(new FileWriter(path,true))){
-            int id = DuenioMascota.cargarDuenios("archivos/duenosP4.csv").size()+1;
-            
-            //Se debe escribir el indice en el que se encuentra el 
+    public static void escribirDuenio(DuenioMascota d){
+        try(BufferedWriter fw = new BufferedWriter(new FileWriter(App.pathDuenios,true))){
+            int id = DuenioMascota.cargarDuenios().size()+1;
+
             fw.write(id+","+d.apellidos+","+d.nombre+","+d.direccion+","+d.telefono+","+d.ciudad.getNombre()+","+d.email+"\n");
             
             
@@ -106,8 +106,8 @@ public class DuenioMascota extends Persona implements Serializable{
     }
     
     
-    public static void actualizarListaDuenios(ArrayList<DuenioMascota> lista,String path){
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(path))){
+    public static void actualizarListaDuenios(ArrayList<DuenioMascota> lista){
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(App.pathDuenios))){
             //Se reescribe todo en el archivo
             int  i = 0;
             for(DuenioMascota d: lista){

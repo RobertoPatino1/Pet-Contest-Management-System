@@ -1,4 +1,4 @@
-package com.mycompany.modelo;
+package com.mycompany.enums;
 
 //Enum para el tipo de mascota
 public enum TipoAnimal {

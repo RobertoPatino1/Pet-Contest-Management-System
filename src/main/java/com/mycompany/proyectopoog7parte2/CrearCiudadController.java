@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.proyectopoog7parte2;
 
 import com.mycompany.modelo.Ciudad;
@@ -37,14 +33,12 @@ public class CrearCiudadController{
      */
     
     public void initialize() {
-        //Ocultamos el boton para actualizar la ciudad
         buttonActualizar.setVisible(false);
      
         
         ArrayList<String> listaProvincias = new ArrayList<>();
         
-        //Vamos a llenar el combo box con los nombres de provincias de las ciudades
-        llenarCombo(Ciudad.cargarCiudades(App.pathCiudades));
+        llenarCombo(Ciudad.cargarCiudades());
     }    
     
     @FXML
@@ -58,11 +52,11 @@ public class CrearCiudadController{
                throw new NullPointerException();
             }
             //Se recupera el ultimo id
-            int id = Ciudad.cargarCiudades("archivos/ciudades.csv").size()+1;
+            int id = Ciudad.cargarCiudades().size()+1;
             //Creamos el objeto
             Ciudad c = new Ciudad(id, nombreCiudad, nombreProvincia);
             //Se la escribe en el archivo
-            Ciudad.escribirCiudad(c, "archivos/ciudades.csv");
+            Ciudad.escribirCiudad(c);
             
             
             System.out.println("Se ha creado y agg la ciudad exitosamente");
@@ -125,7 +119,7 @@ public class CrearCiudadController{
         int indice = ciudadOG.getId()-1;
         System.out.println(ciudadOG);
         //Entramos a la lista y accedemos al objeto en ese indice
-        ArrayList<Ciudad> listaCiudades = Ciudad.cargarCiudades("archivos/ciudades.csv");
+        ArrayList<Ciudad> listaCiudades = Ciudad.cargarCiudades();
         
         Ciudad ciudadActualizar = listaCiudades.get(indice);
         
@@ -140,7 +134,7 @@ public class CrearCiudadController{
         
         
         //Se actualiza la lista de ciudades
-        Ciudad.actualizarListaCiudades(listaCiudades, "archivos/ciudades.csv");
+        Ciudad.actualizarListaCiudades(listaCiudades);
 
         
         //Le mostramos un aviso al usuario

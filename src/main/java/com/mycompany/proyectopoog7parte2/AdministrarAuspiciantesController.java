@@ -38,16 +38,15 @@ public class AdministrarAuspiciantesController{
  
    
     public void initialize() {
-        // TODO
+
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colCiudad.setCellValueFactory(new PropertyValueFactory<>("ciudad"));
         
-        //Se agregan las opciones al table view
         addTableButtons();
         
-        tvAdministrarAuspiciantes.getItems().addAll(Auspiciante.cargarListaAuspiciantes(App.pathAuspiciantes));
+        tvAdministrarAuspiciantes.getItems().addAll(Auspiciante.cargarListaAuspiciantes());
         
     }    
 
@@ -62,19 +61,19 @@ public class AdministrarAuspiciantesController{
     }
     
     
-    //Metodos de edicion y eliminacion
+
     private void editarAuspiciante(Auspiciante au){
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("crearAuspiciantes.fxml"));//no tiene el controlador especificado
             Parent root = (Parent) fxmlLoader.load();
             CrearAuspiciantesController ct = fxmlLoader.getController();
-            fxmlLoader.setController(ct);//se asigna el controlador
+            fxmlLoader.setController(ct);
             
-            //Se llena el combo y los campos del duenio a editar
-            ct.llenarComboCiudad(Ciudad.cargarCiudades(App.pathCiudades));
+
+            ct.llenarComboCiudad(Ciudad.cargarCiudades());
             ct.llenarCamposAuspiciante(au);
             
-            //Se cambia a la escena de edicion
+
             App.changeRoot(root);
             
         }catch(IOException e){
@@ -85,11 +84,11 @@ public class AdministrarAuspiciantesController{
     }
     
     
-    //Metodo para eliminar un auspiciante
+
 
     private void eliminarAuspiciante(Auspiciante au){
 
-        //Primero se muestra la alerta
+
         try{
         Alert alerta = new Alert(Alert.AlertType.WARNING,"Recuerde que esta acción es irreversible. \n¿Seguro que desea continuar?");
         
@@ -103,21 +102,16 @@ public class AdministrarAuspiciantesController{
 
         Optional<ButtonType> result = confirmacion.showAndWait();
         if(result.get()==ButtonType.OK){
-            //Se obtiene la lista de duenios
-            ArrayList<Auspiciante> lista = Auspiciante.cargarListaAuspiciantes(App.pathAuspiciantes);
+            ArrayList<Auspiciante> lista = Auspiciante.cargarListaAuspiciantes();
             System.out.println(lista.contains(au));
-            
-            //Se obtiene el indice del duenio a eliminar
             int indice = lista.indexOf(au);
             System.out.println(lista);
             System.out.println(indice);
-            
-            //Se elimina al auspiciante en el indice obtenido
             lista.remove(indice); 
             System.out.println(lista);
             
             //Se actualiza el archivo
-            Auspiciante.actualizarListaAuspiciantes(lista, App.pathAuspiciantes);
+            Auspiciante.actualizarListaAuspiciantes(lista);
             System.out.println("Se ha eliminado al auspiciante: "+au.getNombre());
             App.setRoot("administrarAuspiciantes");
 

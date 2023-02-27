@@ -1,5 +1,6 @@
 package com.mycompany.modelo;
 
+import com.mycompany.proyectopoog7parte2.App;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -65,9 +66,9 @@ public class Ciudad implements Serializable {
     }
     
 
-    public static ArrayList<Ciudad> cargarCiudades(String path){
+    public static ArrayList<Ciudad> cargarCiudades(){
         ArrayList<Ciudad> listaCiudades = new ArrayList<>();
-        try(BufferedReader br = new BufferedReader(new FileReader(path))){
+        try(BufferedReader br = new BufferedReader(new FileReader(App.pathCiudades))){
             String line;
             while ((line=br.readLine()) != null) {
                 
@@ -86,9 +87,9 @@ public class Ciudad implements Serializable {
         
     }
     
-    public static void escribirCiudad(Ciudad c, String path){
-            try(BufferedWriter fw = new BufferedWriter(new FileWriter(path,true))){
-            int id = Ciudad.cargarCiudades(path).size()+1;
+    public static void escribirCiudad(Ciudad c){
+            try(BufferedWriter fw = new BufferedWriter(new FileWriter(App.pathCiudades,true))){
+            int id = Ciudad.cargarCiudades().size()+1;
             fw.write(id+","+c.nombre+","+c.provincia+"\n");
             
             
@@ -97,8 +98,8 @@ public class Ciudad implements Serializable {
         }
     }
     
-    public static void actualizarListaCiudades(ArrayList<Ciudad> lista,String path){
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(path))){
+    public static void actualizarListaCiudades(ArrayList<Ciudad> lista){
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(App.pathCiudades))){
             int i = 0;
             for(Ciudad c: lista){
                 i++;

@@ -1,5 +1,7 @@
 package com.mycompany.modelo;
 
+import com.mycompany.enums.TipoAnimalesConcurso;
+import com.mycompany.proyectopoog7parte2.App;
 import utils.UtilDate;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,14 +30,11 @@ public class Concurso implements Serializable{
     private static final long serialVersionUID = 6426991392696108758L;
     private boolean seEnvioInvitacion;
 
-    //Lista de mascotas inscritas
     private ArrayList<Mascota> mascotasInscritas = new ArrayList<>();
 
-    //Lista de ganadores
     private ArrayList<Mascota> ganadores = new ArrayList<>();
     
 
-    //Constructor que inicializa todos los atributos
     public Concurso(int id, String nombre, Date fechaEvento, String horaEvento, Date fechaInicioInscripcion, Date fechaCierreInscripcion, Ciudad ciudad, String lugar, ArrayList<Premio> listaPremio, Auspiciante auspiciante, TipoAnimalesConcurso dirigidoA){
         this.id = id;
         this.nombre= nombre;
@@ -52,8 +51,7 @@ public class Concurso implements Serializable{
         this.concursoFinalizado = false; //El concurso aun no ha terminado
     }
     
-    //Constructores adicionales 
-    //Constructor que inicializa todos los atributos + Lista de mascotas inscritas
+
     public Concurso(int id, String nombre, Date fechaEvento, String horaEvento, Date fechaInicioInscripcion, Date fechaCierreInscripcion, Ciudad ciudad, String lugar, ArrayList<Premio>  listaPremio, Auspiciante auspiciante, TipoAnimalesConcurso dirigidoA, ArrayList<Mascota> mascotasInscritas){
         this.id = id;
         this.nombre= nombre;
@@ -71,7 +69,6 @@ public class Concurso implements Serializable{
         this.mascotasInscritas= mascotasInscritas;
     }
     
-    //Constructor que inicializa todos los atributos + Lista de mascotas inscritas + Lista de ganadores
     public Concurso(int id, String nombre, Date fechaEvento, String horaEvento, Date fechaInicioInscripcion, Date fechaCierreInscripcion, Ciudad ciudad, String lugar, ArrayList<Premio>  listaPremio, Auspiciante auspiciante, TipoAnimalesConcurso dirigidoA, ArrayList<Mascota> mascotasInscritas, ArrayList<Mascota> ganadores){
         this.id = id;
         this.nombre= nombre;
@@ -90,28 +87,23 @@ public class Concurso implements Serializable{
         this.ganadores= ganadores;
     }
     
-    //Constructor solo con el nombre
     public Concurso(String nombre){
         this.nombre = nombre;
     }
 
 
-    //Metodo para cerrar las inscripciones
     public void cerrarInscripcionesConcurso(){
         estaAbierto = false;
     }
 
-    //Metodo para finalizar un concurso
     public void finalizarConcurso(){
         concursoFinalizado = true;
     }
 
-    //Metodo para seleccionar a los ganadores
     public void seleccionarGanadores(ArrayList<Mascota> ganadores){
         this.ganadores = ganadores;
     }
 
-    //Metodo para inscribir participantes en el concurso:
     public void inscribirParticipantes(Mascota m){
         if(estaAbierto)
             mascotasInscritas.add(m);
@@ -119,13 +111,12 @@ public class Concurso implements Serializable{
             System.out.println("El concurso se encuentra cerrado.");
     }
 
-    //Metodo para consultar a los ganadores
     public void consultarGanadores(){
         System.out.println("Se presenta la lista de ganadores\n");
         System.out.println(ganadores);
     }
 
-    //Getters
+    
 
     public int getId() {
         return id;
@@ -192,7 +183,6 @@ public class Concurso implements Serializable{
     }
     
     
-    //Setters
 
     public void setId(int id) {
         this.id = id;
@@ -273,15 +263,7 @@ public class Concurso implements Serializable{
         return d.after(this.fechaCierreInscripcion);
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
 
     //Metodo equals
@@ -307,11 +289,7 @@ public class Concurso implements Serializable{
         return nombre;
     }
     
-    
-    /*Metodo para validar si un concurso esta vigente y disponible
-    Retorna true si el concurso ha comenzado
-    Retorna false si el concurso no ha comenzado
-    */
+
     public static boolean concursoComenzado(Concurso c){
         Date d = new Date();
         return !c.getFechaEvento().after(d);
@@ -338,24 +316,24 @@ public class Concurso implements Serializable{
          ArrayList<Premio> premiosConcurso5 = new  ArrayList<>();
          
          //Para concurso 1
-         Premio p1con1 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(0));
-         Premio p2con1 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(0));
+         Premio p1con1 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes().get(0));
+         Premio p2con1 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes().get(0));
          
          //Para concurso 2
-         Premio p1con2 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(1));
-         Premio p2con2 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(1));
+         Premio p1con2 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes().get(1));
+         Premio p2con2 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes().get(1));
          
          //Para concurso 3
-         Premio p1con3 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(2));
-         Premio p2con3 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(2));
+         Premio p1con3 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes().get(2));
+         Premio p2con3 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes().get(2));
          
          //Para concurso 4
-         Premio p1con4 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(0));
-         Premio p2con4 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(1));
+         Premio p1con4 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes().get(0));
+         Premio p2con4 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes().get(1));
          
          //Para concurso 5
-         Premio p1con5 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(1));
-         Premio p2con5 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(2));
+         Premio p1con5 = new Premio(1, "Comida gratis para el animal por 1 año", Auspiciante.cargarListaAuspiciantes().get(1));
+         Premio p2con5 = new Premio(2, "Comida gratis para el animal por medio año", Auspiciante.cargarListaAuspiciantes().get(2));
          
          //Añadiendo los premios a los concursos
          premiosConcurso1.add(p1con1);
@@ -370,28 +348,27 @@ public class Concurso implements Serializable{
          premiosConcurso5.add(p2con5);
 
         
-        //5 Concursos 3 primeros actuales y 2 ultimos pasados
+
     
-        Concurso con1 = new Concurso(1, "Love Animals", UtilDate.getDateFromString("2022-02-16"), "12:00", UtilDate.getDateFromString("2022-01-26"), UtilDate.getDateFromString("2022-02-11"),Ciudad.cargarCiudades("archivos/ciudades.csv").get(1), "Avenida nombre 1", premiosConcurso1, Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(0), TipoAnimalesConcurso.TODOS);
-        Concurso con2 = new Concurso(2, "Match Canino", UtilDate.getDateFromString("2022-02-17"), "13:00", UtilDate.getDateFromString("2022-01-27"), UtilDate.getDateFromString("2022-02-12"),Ciudad.cargarCiudades("archivos/ciudades.csv").get(0), "Avenida nombre 3", premiosConcurso2, Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(1), TipoAnimalesConcurso.TODOS);
-        Concurso con3 = new Concurso(3, "Happy Paws", UtilDate.getDateFromString("2022-02-18"), "14:00", UtilDate.getDateFromString("2022-01-28"), UtilDate.getDateFromString("2022-02-13"),Ciudad.cargarCiudades("archivos/ciudades.csv").get(2), "Avenida nombre 2", premiosConcurso3, Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(2), TipoAnimalesConcurso.TODOS);
+        Concurso con1 = new Concurso(1, "Love Animals", UtilDate.getDateFromString("2022-02-16"), "12:00", UtilDate.getDateFromString("2022-01-26"), UtilDate.getDateFromString("2022-02-11"),Ciudad.cargarCiudades().get(1), "Avenida nombre 1", premiosConcurso1, Auspiciante.cargarListaAuspiciantes().get(0), TipoAnimalesConcurso.TODOS);
+        Concurso con2 = new Concurso(2, "Match Canino", UtilDate.getDateFromString("2022-02-17"), "13:00", UtilDate.getDateFromString("2022-01-27"), UtilDate.getDateFromString("2022-02-12"),Ciudad.cargarCiudades().get(0), "Avenida nombre 3", premiosConcurso2, Auspiciante.cargarListaAuspiciantes().get(1), TipoAnimalesConcurso.TODOS);
+        Concurso con3 = new Concurso(3, "Happy Paws", UtilDate.getDateFromString("2022-02-18"), "14:00", UtilDate.getDateFromString("2022-01-28"), UtilDate.getDateFromString("2022-02-13"),Ciudad.cargarCiudades().get(2), "Avenida nombre 2", premiosConcurso3, Auspiciante.cargarListaAuspiciantes().get(2), TipoAnimalesConcurso.TODOS);
         
-        //Lista con los concursantes en el concuros 4
-        //Esta es la que sera agregada a los concursos ya realizados
+   
         ArrayList<Mascota> listaConcursantes4 = new ArrayList<Mascota>();
         
-        ArrayList<Mascota> listaMascotas = Mascota.cargarMascotas("archivos/mascotas.csv");
+        ArrayList<Mascota> listaMascotas = Mascota.cargarMascotas();
         
         for(int i = 0;i<10;i++){
             listaConcursantes4.add(listaMascotas.get(i));
         }
-        //Seleccionamos a 3 ganadores
+        
         ArrayList<Mascota> listaGanadores4 = new ArrayList<>();
         listaGanadores4.add(listaConcursantes4.get(0));
         listaGanadores4.add(listaConcursantes4.get(6));
         listaGanadores4.add(listaConcursantes4.get(3));        
         
-        Concurso con4 = new Concurso(4, "Heroes Gatunos", UtilDate.getDateFromString("2021-11-16"), "11:00", UtilDate.getDateFromString("2021-10-26"), UtilDate.getDateFromString("2021-11-11"),Ciudad.cargarCiudades("archivos/ciudades.csv").get(0), "14 y Francisco segura", premiosConcurso4, Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(2), TipoAnimalesConcurso.GATOS, listaConcursantes4,listaGanadores4);
+        Concurso con4 = new Concurso(4, "Heroes Gatunos", UtilDate.getDateFromString("2021-11-16"), "11:00", UtilDate.getDateFromString("2021-10-26"), UtilDate.getDateFromString("2021-11-11"),Ciudad.cargarCiudades().get(0), "14 y Francisco segura", premiosConcurso4, Auspiciante.cargarListaAuspiciantes().get(2), TipoAnimalesConcurso.GATOS, listaConcursantes4,listaGanadores4);
         
         //Concurso 5
         ArrayList<Mascota> listaConcursantes5 = new ArrayList<Mascota>();
@@ -405,7 +382,7 @@ public class Concurso implements Serializable{
         listaGanadores5.add(listaConcursantes5.get(3));
         //System.out.print(listaGanadores5);
         
-        Concurso con5 = new Concurso(5, "Heroes Caninos", UtilDate.getDateFromString("2021-11-17"), "12:00", UtilDate.getDateFromString("2021-10-27"), UtilDate.getDateFromString("2021-11-12"),Ciudad.cargarCiudades("archivos/ciudades.csv").get(1), "10 y Francisco segura", premiosConcurso5, Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser").get(1), TipoAnimalesConcurso.PERROS,listaConcursantes5,listaGanadores5);
+        Concurso con5 = new Concurso(5, "Heroes Caninos", UtilDate.getDateFromString("2021-11-17"), "12:00", UtilDate.getDateFromString("2021-10-27"), UtilDate.getDateFromString("2021-11-12"),Ciudad.cargarCiudades().get(1), "10 y Francisco segura", premiosConcurso5, Auspiciante.cargarListaAuspiciantes().get(1), TipoAnimalesConcurso.PERROS,listaConcursantes5,listaGanadores5);
 
         //Se agregan todos los concursos a la lista general
         listaConcursos.add(con1);
@@ -431,9 +408,9 @@ public class Concurso implements Serializable{
     
     
     
-    public static ArrayList<Concurso> cargarListaConcursos(String path){
+    public static ArrayList<Concurso> cargarListaConcursos(){
         ArrayList<Concurso> listaConcursos = new ArrayList<Concurso>();
-        try(ObjectInputStream lector = new ObjectInputStream(new FileInputStream(path))){
+        try(ObjectInputStream lector = new ObjectInputStream(new FileInputStream(App.pathConcursos))){
             listaConcursos = (ArrayList<Concurso>) lector.readObject();
         }catch(FileNotFoundException e){
             System.out.println("Archivo no encontrado: "+e);
@@ -446,13 +423,12 @@ public class Concurso implements Serializable{
     }
     
     
-    //Metodo para escribir un concurso
-    public static void actualizarArchivoConcursos(Concurso c, String path){
-        ArrayList<Concurso> listaConcursos = cargarListaConcursos(path);
+    public static void actualizarArchivoConcursos(Concurso c){
+        ArrayList<Concurso> listaConcursos = cargarListaConcursos();
         listaConcursos.add(c);
         
         //Ahora actualizamos la lista con el concurso escrito
-        try(ObjectOutputStream escritor = new ObjectOutputStream(new FileOutputStream(path))){
+        try(ObjectOutputStream escritor = new ObjectOutputStream(new FileOutputStream(App.pathConcursos))){
             //Se escribe la lista con los auspiciantes actualizada
             escritor.writeObject(listaConcursos);
         }catch(FileNotFoundException e){
@@ -466,20 +442,18 @@ public class Concurso implements Serializable{
     }
     
     
-    public static void actualizarListaConcursos(ArrayList<Concurso> lista, String path){
+    public static void actualizarListaConcursos(ArrayList<Concurso> lista){
         int i = 0;
-        //Se reescribe la lista
+
         ArrayList<Concurso> listaActualizada = new ArrayList<>();
         
-        try(ObjectOutputStream escritor = new ObjectOutputStream(new FileOutputStream(path))){
+        try(ObjectOutputStream escritor = new ObjectOutputStream(new FileOutputStream(App.pathConcursos))){
             for(Concurso c:lista){
                 i++;
                 c.setId(i);
                 listaActualizada.add(c);
             }
-            //Una vez que se settean los ids, escribimos la lista
-            
-           //Escribimos la nueva lista actualizada en el archivo serializado
+
            escritor.writeObject(listaActualizada);
         }catch(IOException e){
             System.out.println("Error al escribir: "+e);

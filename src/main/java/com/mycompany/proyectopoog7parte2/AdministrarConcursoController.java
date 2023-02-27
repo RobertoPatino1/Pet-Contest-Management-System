@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.proyectopoog7parte2;
 
 import com.mycompany.modelo.Auspiciante;
@@ -32,11 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import utils.Correo;
 
-/**
- * FXML Controller class
- *
- * @author Det-Pc
- */
+
 public class AdministrarConcursoController{
 
     @FXML
@@ -58,24 +50,16 @@ public class AdministrarConcursoController{
     @FXML
     private BorderPane bpAdministrarConcursos;
     
-    /**
-     * Initializes the controller class.
-     */
+
 
     public void initialize() {
-        // TODO
-        
-
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaEvento"));
         colCiudad.setCellValueFactory(new PropertyValueFactory<>("ciudad"));
-        
-        //Se agregan las opciones
         agregarOpciones();
         
-        tvConcursos.getItems().addAll(Concurso.cargarListaConcursos(App.pathConcursos));
-        //System.out.println(Concurso.cargarListaConcursos(App.pathConcursos).get(5).getSeEnvioInvitacion());
+        tvConcursos.getItems().addAll(Concurso.cargarListaConcursos());
     }    
 
     @FXML
@@ -100,14 +84,14 @@ public class AdministrarConcursoController{
             CrearConcursoController ct = fxmlLoader.getController();
             fxmlLoader.setController(ct);//se asigna el controlador
             
-            //Se llena el combo y los campos del duenio a editar
-            ct.llenarComboCiudad(Ciudad.cargarCiudades(App.pathCiudades));
+
+            ct.llenarComboCiudad(Ciudad.cargarCiudades());
             ct.llenarComboDirigidoA();
-            ct.llenarComboAuspiciantes(Auspiciante.cargarListaAuspiciantes(App.pathAuspiciantes));
+            ct.llenarComboAuspiciantes(Auspiciante.cargarListaAuspiciantes());
             ct.llenarTVPremios(c);
             ct.llenarCamposConcurso(c);
             
-            //Se cambia a la escena de edicion
+
             App.changeRoot(root);
             
         }catch(IOException e){
@@ -121,7 +105,7 @@ public class AdministrarConcursoController{
     private void eliminarConcurso(Concurso c){
         Date d = new Date();
         if(c.getFechaEvento().after(d)){
-            //Se puede eliminar
+
                 try{
                     Alert alerta = new Alert(Alert.AlertType.WARNING,"Recuerde que esta acción es irreversible. \n¿Seguro que desea continuar?");
 
@@ -136,7 +120,7 @@ public class AdministrarConcursoController{
                     Optional<ButtonType> result = confirmacion.showAndWait();
                     if(result.get()==ButtonType.OK){
                         //Se obtiene la lista de duenios
-                        ArrayList<Concurso> lista = Concurso.cargarListaConcursos(App.pathConcursos);
+                        ArrayList<Concurso> lista = Concurso.cargarListaConcursos();
                         System.out.println(lista.contains(c));
 
                         //Se obtiene el indice del duenio a eliminar
@@ -149,7 +133,7 @@ public class AdministrarConcursoController{
                         System.out.println(lista);
                         ArrayList<Concurso> l = lista;
                         //Se actualiza el archivo
-                        Concurso.actualizarListaConcursos(l, App.pathConcursos);
+                        Concurso.actualizarListaConcursos(l);
                         System.out.println("Se ha eliminado al concurso: "+c.getNombre());
                         
                         System.out.println(lista);
@@ -182,11 +166,11 @@ public class AdministrarConcursoController{
         
         System.out.println("Se estan enviando correos a todos los usuarios");        
         send(c);
-        //Actualizando
-        ArrayList<Concurso> listaConcurso = Concurso.cargarListaConcursos(App.pathConcursos);
+
+        ArrayList<Concurso> listaConcurso = Concurso.cargarListaConcursos();
         int indice = listaConcurso.indexOf(c);
         listaConcurso.set(indice, c);
-        Concurso.actualizarListaConcursos(listaConcurso, App.pathConcursos);
+        Concurso.actualizarListaConcursos(listaConcurso);
         try{
         App.setRoot("administrarConcurso");
         }catch(IOException e){
@@ -194,9 +178,7 @@ public class AdministrarConcursoController{
         }
     }
     
-    //Metodo para agregar las opciones
-        //Codigo para crear y manejar los eventos en los botones
-    //Metodo para agregar los botones a la columna opciones
+
     private void agregarOpciones() {
         Callback<TableColumn<Concurso, Void>, TableCell<Concurso, Void>> cellFactory = new Callback<TableColumn<Concurso, Void>, TableCell<Concurso, Void>>() {
             @Override
@@ -303,7 +285,7 @@ public class AdministrarConcursoController{
                 "\n Hora: "+c.getHoraEvento()+
                 "\nLugar: "+c.getLugar()+"\n Inicio de inscripciones: "+c.getFechaInicioInscripcion()+
                 "\nFin de inscripciones: "+c.getFechaCierreInscripcion()+"\n Concurso para: "+c.getDirigidoA()+"\n Te esperamos!";
-        for(DuenioMascota d: DuenioMascota.cargarDuenios(App.pathDuenios)){
+        for(DuenioMascota d: DuenioMascota.cargarDuenios()){
             String destinatario = d.getEmail();
             System.out.println("Enviando correo a: "+d.getEmail());
             
@@ -348,8 +330,8 @@ public class AdministrarConcursoController{
             lvInscritos.getItems().setAll(listaMascotasInscritas);
             
             ListView<Mascota> listViewNoInscritos = new ListView<>();
-            ArrayList<Mascota> listaNoInscritos = Mascota.cargarMascotas(App.pathMascotas);
-            ArrayList<Mascota> copiaNoInscritos = Mascota.cargarMascotas(App.pathMascotas);
+            ArrayList<Mascota> listaNoInscritos = Mascota.cargarMascotas();
+            ArrayList<Mascota> copiaNoInscritos = Mascota.cargarMascotas();
 
             //Eliminando las mascotas que ya estan inscritas de la lista
             for(Mascota m :listaNoInscritos){
@@ -397,12 +379,12 @@ public class AdministrarConcursoController{
                     c.setMascotasInscritas(listaMascotasInscritas);
                     
                     //Se obtiene al concurso
-                    int indice = Concurso.cargarListaConcursos(App.pathConcursos).indexOf(c);
+                    int indice = Concurso.cargarListaConcursos().indexOf(c);
                     //Se reemplaza
-                    ArrayList<Concurso> listaActualizada =Concurso.cargarListaConcursos(App.pathConcursos);
+                    ArrayList<Concurso> listaActualizada =Concurso.cargarListaConcursos();
 
                     listaActualizada.get(indice).setMascotasInscritas(listaMascotasInscritas);
-                    Concurso.actualizarListaConcursos(listaActualizada, App.pathConcursos);
+                    Concurso.actualizarListaConcursos(listaActualizada);
     
                     App.setRoot("administrarConcurso");
                 } catch (IOException ex) {
@@ -425,7 +407,7 @@ public class AdministrarConcursoController{
     private void consultarGanadores(Concurso c){
         try{
             //Obtenemos la lista de concursos
-            ArrayList<Concurso> lista = Concurso.cargarListaConcursos(App.pathConcursos);
+            ArrayList<Concurso> lista = Concurso.cargarListaConcursos();
             //System.out.println(lista);
             opCrearConcurso.setVisible(false);
             

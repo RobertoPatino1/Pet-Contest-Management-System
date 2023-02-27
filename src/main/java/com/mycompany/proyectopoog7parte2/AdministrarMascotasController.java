@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.proyectopoog7parte2;
 
 import com.mycompany.modelo.DuenioMascota;
 import com.mycompany.modelo.Mascota;
-import com.mycompany.modelo.TipoAnimal;
+import com.mycompany.enums.TipoAnimal;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -23,11 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
-/**
- * FXML Controller class
- *
- * @author Det-Pc
- */
+
 public class AdministrarMascotasController{
 
 
@@ -50,16 +42,14 @@ public class AdministrarMascotasController{
 
  
     public void initialize() {
-        //System.out.println(Mascota.cargarMascotas("archivos/mascotas.csv"));
         tcCodigo.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         tcTipoMascota.setCellValueFactory(new PropertyValueFactory<>("tipoMascota"));
         tcDuenio.setCellValueFactory(new PropertyValueFactory<>("duenio"));
         
-        //Se agregan las opciones al table view
         agregarOpciones();
         
-        tvMascotas.getItems().addAll(Mascota.cargarMascotas(App.pathMascotas));
+        tvMascotas.getItems().addAll(Mascota.cargarMascotas());
         
         
         
@@ -79,7 +69,6 @@ public class AdministrarMascotasController{
     
     
     
-    //Metodo para editar una mascota
     private void editarMascota(Mascota m){
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("crearMascota.fxml"));//no tiene el controlador especificado
@@ -87,11 +76,9 @@ public class AdministrarMascotasController{
             CrearMascotaController ct = fxmlLoader.getController();
             fxmlLoader.setController(ct);//se asigna el controlador
             
-            //Se llena el combo y los campos del duenio a editar
-            ct.llenarComboDuenioMascota(DuenioMascota.cargarDuenios(App.pathDuenios));
+            ct.llenarComboDuenioMascota(DuenioMascota.cargarDuenios());
             ct.llenarCamposMascota(m);
             
-            //Se cambia a la escena de edicion
             App.changeRoot(root);
             
         }catch(IOException e){
@@ -103,11 +90,9 @@ public class AdministrarMascotasController{
     
     
     
-    //Metodo para eliminar una mascota
         
     private void eliminarMascota(Mascota m){
-        //Se muestra la alerta
-        //Primero se muestra la alerta
+
         try{
         Alert alerta = new Alert(Alert.AlertType.WARNING,"Recuerde que esta acción es irreversible. \n¿Seguro que desea continuar?");
         
@@ -120,38 +105,35 @@ public class AdministrarMascotasController{
         
         Optional<ButtonType> result = confirmacion.showAndWait();
         if(result.get()==ButtonType.OK){
-            //Se obtiene la lista de duenios
-            ArrayList<Mascota> lista = Mascota.cargarMascotas(App.pathMascotas);
+
+            ArrayList<Mascota> lista = Mascota.cargarMascotas();
             System.out.println(lista.contains(m));
             
-            //Se obtiene el indice del duenio a eliminar
+
             int indice = lista.indexOf(m);
             System.out.println(lista);
             System.out.println(indice);
             
-            //Se elimina al duenio en el indice obtenido
+
             lista.remove(indice); 
             System.out.println(lista);
             
             
-            //Se actualiza el archivo
-            Mascota.actualizarListaMascotas(lista, App.pathMascotas);
+
+            Mascota.actualizarListaMascotas(lista);
             System.out.println("Se ha eliminado la mascota: "+m.getNombre());
             App.setRoot("administrarMascotas");
-
-
-        }else{
-            System.out.println("No problem");
         }
-        }catch(Exception e){
+        
+        }catch(IOException e){
             System.out.println("Error al eliminar la mascota: "+e.getLocalizedMessage());
             e.printStackTrace();
-            e.getCause();
+
            
         }     
     }
     
-    //Metodo para visualizar una mascota
+
    
     private void visualizarDetalleMascota(Mascota m){
 
@@ -162,7 +144,6 @@ public class AdministrarMascotasController{
             fxmlLoader.setController(ct);//se asigna el controlador
             
             ct.llenarCamposMascota(m);
-            //Se cambia a la escena de edicion
             App.changeRoot(root);
             
         }catch(IOException e){
@@ -174,8 +155,7 @@ public class AdministrarMascotasController{
     }
     
     
-    //Codigo para crear y manejar los eventos en los botones
-    //Metodo para agregar los botones a la columna opciones
+
     private void agregarOpciones() {
         Callback<TableColumn<Mascota, Void>, TableCell<Mascota, Void>> cellFactory = new Callback<TableColumn<Mascota, Void>, TableCell<Mascota, Void>>() {
             @Override

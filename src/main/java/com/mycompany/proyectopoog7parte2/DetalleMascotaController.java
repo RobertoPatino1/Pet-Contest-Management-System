@@ -71,7 +71,7 @@ public class DetalleMascotaController implements Initializable {
         
         
         try {
-            String fileName = "archivos/ImagenesMascotas/"+m.getFoto();//armar la ruta de la foto
+            String fileName = "files/MascotsImages/"+m.getFoto();//armar la ruta de la foto
             //abrir el stream de la imagen de la persona
             //input = fileName. ;
             System.out.println(fileName);           

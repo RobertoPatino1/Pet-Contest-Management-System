@@ -1,5 +1,6 @@
 package com.mycompany.modelo;
 
+import com.mycompany.enums.TipoAnimal;
 import utils.UtilDate;
 import com.mycompany.proyectopoog7parte2.App;
 import java.io.BufferedReader;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Mascota implements Serializable{
-    //private int id;
     private String nombre;
     private TipoAnimal tipoMascota;
     private String raza;
@@ -25,7 +25,7 @@ public class Mascota implements Serializable{
     private boolean disponibleParaFuturasInscripciones;
     private boolean haParticipado;
 
-    //Constructor que inicializa todos los atributos
+
     public Mascota(int id, String nombre, TipoAnimal tipoMascota, String raza, Date fechaDeNacimiento, String foto, DuenioMascota duenio){
         this.nombre = nombre;
         this.tipoMascota = tipoMascota;
@@ -38,7 +38,7 @@ public class Mascota implements Serializable{
         this.haParticipado = false; //Se intuye que ninguna mascota ha participado en un concurso
     }
     
-    //Getters
+
 
     public String getNombre() {
         return nombre;
@@ -78,7 +78,7 @@ public class Mascota implements Serializable{
     
     
 
-    //Setters
+
     public void setDisponibilidadDeInscripciones(boolean disp){
         this.disponibleParaFuturasInscripciones = disp;
     }
@@ -125,8 +125,7 @@ public class Mascota implements Serializable{
     
     
 
-    //Metodo equals:
-    //metodo usado para buscar una mascota en la lista de mascotas con el .contains()
+
     public boolean equals(Object o){
         if(this == o){
             return true;
@@ -139,8 +138,7 @@ public class Mascota implements Serializable{
         return false;
     }
 
-    //toString()
-    //Sera usado al momento de mostrar las listas de mascotas por pantalla
+
     public String toString(){
         return nombre.toUpperCase();
     }
@@ -150,17 +148,17 @@ public class Mascota implements Serializable{
     
     
     
-    //Metodo que lee el archivo y retorna un ArrayList con las mascotas en el
+
     
-    public static ArrayList<Mascota> cargarMascotas(String path){
+    public static ArrayList<Mascota> cargarMascotas(){
         ArrayList<Mascota> listaMascotas = new ArrayList<>();
         
-        try(BufferedReader br = new BufferedReader(new FileReader(path))){
+        try(BufferedReader br = new BufferedReader(new FileReader(App.pathMascotas))){
             String line;
             while((line = br.readLine())!=null){
                 String[] datos = line.strip().split(";");
                 int indiceDuenio = Integer.valueOf(datos[6]);       
-                DuenioMascota d = DuenioMascota.cargarDuenios("archivos/owners.csv").get(indiceDuenio-1);        
+                DuenioMascota d = DuenioMascota.cargarDuenios().get(indiceDuenio-1);        
                 if(datos[2].toUpperCase().equals("PERRO")){
                     Mascota m = new Mascota(Integer.valueOf(datos[0]),datos[1],TipoAnimal.PERRO,datos[3],UtilDate.getDateFromString(datos[4]),datos[5],d);
                     listaMascotas.add(m);
@@ -175,22 +173,17 @@ public class Mascota implements Serializable{
         }return listaMascotas;
     }
     
-    //Metodo para escribir mascotas
-    public static void escribirMascota(Mascota m, String path){
-        try(BufferedWriter fw = new BufferedWriter(new FileWriter(path,true))){
-            
-            //Ahora escribimos el objeto en el archivo
-     
+
+    public static void escribirMascota(Mascota m){
+        try(BufferedWriter fw = new BufferedWriter(new FileWriter(App.pathMascotas,true))){
+ 
             Date date = m.getFechaDeNacimiento();
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String fechaString = dateFormat.format(date);
-            //System.out.println("fecha convertida para escribir: "+fechaString);
-            
-            
-            
-            //Se debe escribir el id del duenio al final
-            int indiceDuenio = DuenioMascota.cargarDuenios("archivos/duenosP4.csv").indexOf(m.duenio);
-            int idDuenio = DuenioMascota.cargarDuenios("archivos/duenosP4.csv").get(indiceDuenio).getId();
+    
+           
+            int indiceDuenio = DuenioMascota.cargarDuenios().indexOf(m.duenio);
+            int idDuenio = DuenioMascota.cargarDuenios().get(indiceDuenio).getId();
             fw.write(m.id+";"+m.nombre+";"+m.tipoMascota+";"+m.raza+";"+fechaString+";"+m.foto+";"+idDuenio+"\n");
             
             
@@ -200,17 +193,10 @@ public class Mascota implements Serializable{
         
     }
     
-    
-    /*
-    ###########################
-    REVISAR ESTE METODO EN CASO DE ERROR
-    ###########################
-    */
-    
-    //Metodo para actualizar la lista de mascotas
-    public static void actualizarListaMascotas(ArrayList<Mascota> lista, String path){
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(path))){
-            //Se reescribe todo en el archivo
+
+    public static void actualizarListaMascotas(ArrayList<Mascota> lista){
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(App.pathMascotas))){
+
             int  i = 0;
             for(Mascota m: lista){
                 i++;
@@ -219,12 +205,10 @@ public class Mascota implements Serializable{
                 Date date = m.getFechaDeNacimiento();
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaString = dateFormat.format(date);
-                
-            
-                //Se debe escribir el id del duenio al final
-                int indiceDuenio = DuenioMascota.cargarDuenios(App.pathDuenios).indexOf(m.duenio);
-                int idDuenio = DuenioMascota.cargarDuenios(App.pathDuenios).get(indiceDuenio).getId();
-                System.out.println("EL ID DEL DUENIO ES: "+idDuenio);
+
+                int indiceDuenio = DuenioMascota.cargarDuenios().indexOf(m.duenio);
+                int idDuenio = DuenioMascota.cargarDuenios().get(indiceDuenio).getId();
+
                 
                 bw.write(m.getId()+";"+m.getNombre()+";"+m.getTipoMascota()+";"+m.getRaza()+";"+fechaString+";"+m.getFoto()+";"+idDuenio+"\n");
             }

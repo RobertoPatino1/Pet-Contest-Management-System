@@ -8,18 +8,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * JavaFX App
- */
+
 public class App extends Application {
 
     private static Scene scene;
-    public static String pathConcursos = "archivos/concursos.ser";
-    public static String pathMascotas = "archivos/mascotas.csv";
-    public static String pathDuenios = "archivos/owners.csv";
-    public static String pathAuspiciantes = "archivos/auspiciantes.ser";
-    public static String pathPremios = "archivos/premios.ser";
-    public static String pathCiudades= "archivos/ciudades.csv";
+    public static String pathConcursos = "files/contests.ser";
+    public static String pathMascotas = "files/mascots.csv";
+    public static String pathDuenios = "files/owners.csv";
+    public static String pathAuspiciantes = "files/sponsors.ser";
+    public static String pathPremios = "files/awards.ser";
+    public static String pathCiudades= "files/cities.csv";
 
 
     @Override

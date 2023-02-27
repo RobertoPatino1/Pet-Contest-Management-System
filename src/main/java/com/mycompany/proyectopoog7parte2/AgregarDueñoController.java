@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.proyectopoog7parte2;
 
 import com.mycompany.modelo.Ciudad;
@@ -15,11 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-/**
- * FXML Controller class
- *
- * @author JOVEN EJEMPLAR
- */
+
 public class AgregarDueñoController{
 
 
@@ -45,33 +37,26 @@ public class AgregarDueñoController{
     private Button buttonActualizar;
     
     private DuenioMascota duenioOG;
-    /**
-     * Initializes the controller class.
-     */
+ 
     
     public void initialize() {
-       //Ocultamos el boton de actualizar Duenio de mascota
+
        buttonActualizar.setVisible(false);
-        
-       //Rellenamos el combo box
-        //cbCiudad.getItems().addAll(Ciudad.cargarCiudades(App.pathCiudades));
-        llenarComboCiudad(Ciudad.cargarCiudades(App.pathCiudades));
+
+        llenarComboCiudad(Ciudad.cargarCiudades());
     }    
     
     @FXML
     private void switchGuardarDueño() throws IOException,NumberFormatException{
         try{
-            //Ahora debemos recuperar los datos que el usuario ingreso en los textBox para luego crear el objeto
-        
-            //Vamos a obtener los datos
+
             String nombre = txtNombre.getText();
             
             String apellido = txtApellido.getText();
             String direccion = txtDireccion.getText();
             String telefono = txtTelefono.getText();
             if(!telefono.equals("")){
-                //Validando que solo se ingresen numeros, una vez que se ha validado que este campo no es vacio
-                int num = Integer.valueOf(telefono); //Validamos que solo se ingresen numeros
+                int num = Integer.valueOf(telefono); 
             }
             
 
@@ -79,19 +64,13 @@ public class AgregarDueñoController{
             String email = txtEmail.getText();
             
             
-            //Ahora debemos obtener el valor de la ciudad
             Ciudad c = (Ciudad) cbCiudad.getValue();
-            //Debemos recuperar el ultimo id
-            int id = DuenioMascota.cargarDuenios("archivos/duenosP4.csv").size()+1;
+            int id = DuenioMascota.cargarDuenios().size()+1;
             System.out.println(id);
-            //Creamos el objeto
             DuenioMascota d = new DuenioMascota(id, apellido.toUpperCase(), nombre.toUpperCase(), direccion, telefono, c, email);
 
             //Lo escribimos en la lista
-            DuenioMascota.escribirDuenio(d, "archivos/duenosP4.csv");
-
-
-            System.out.println("Se ha escrito el duenio exitosamente"); //FIXME: DEBEMOS MANDAR UN AVISO DE QUE SE ESCRIBIO
+            DuenioMascota.escribirDuenio(d);
             Alert exito = new Alert(Alert.AlertType.INFORMATION,"Se ha creado el dueño de manera exitosa");
             exito.show();
             App.setRoot("administrarDueños"); //FIXME: Esta linea solo nos manda al menu principal, ya que no guarda nada
@@ -120,17 +99,13 @@ public class AgregarDueñoController{
     @FXML
     private void actualizarDuenio() {
         try{
-            //Se recupera el indice del duenio recien creado
             int indice = duenioOG.getId()-1;
             System.out.println(duenioOG);
             
-            //Entramos a la lista de duenios y se accede al objeto con ese indice
-            ArrayList<DuenioMascota> listaDuenios = DuenioMascota.cargarDuenios(App.pathDuenios);
+            ArrayList<DuenioMascota> listaDuenios = DuenioMascota.cargarDuenios();
             
-            //Se obtiene el duenio que sera actualizado
             DuenioMascota duenioActualizar = listaDuenios.get(indice);
             
-            //Se rellenan los campos
             duenioActualizar.setNombre(txtNombre.getText());
             duenioActualizar.setApellidos(txtApellido.getText());
             duenioActualizar.setDireccion(txtDireccion.getText());
@@ -138,21 +113,18 @@ public class AgregarDueñoController{
             duenioActualizar.setEmail(txtEmail.getText());
             
             
-            //Se valida que los campos no esten vacios
             if(duenioActualizar.getNombre().equals("")||duenioActualizar.getApellidos().equals("")
                 ||duenioActualizar.getDireccion().equals("")||duenioActualizar.getTelefono().equals("")
                 ||duenioActualizar.getEmail().equals("")){
                 throw  new NullPointerException();
             }
             if(!duenioActualizar.getTelefono().equals("")){
-                //Validando que solo se ingresen numeros, una vez que se ha validado que este campo no es vacio
                 int num = Integer.valueOf(duenioActualizar.getTelefono()); //Validamos que solo se ingresen numeros
             }
             listaDuenios.set(indice, duenioActualizar);
-            DuenioMascota.actualizarListaDuenios(listaDuenios, App.pathDuenios);
+            DuenioMascota.actualizarListaDuenios(listaDuenios);
             
             
-            //Le mostramos un aviso al usuario
             Alert confirmacion = new Alert(Alert.AlertType.INFORMATION,"Recuerde que este cambio no será aplicado a los elementos" +"\n"+"ya registrados en el sistema");
             confirmacion.setHeaderText("Se ha actualizado el dueño de manera exitosa");
             confirmacion.show();
@@ -183,7 +155,6 @@ public class AgregarDueñoController{
     
     
     
-    //Metodos de rellenado
     public void llenarComboCiudad(ArrayList<Ciudad> ciudades){
         cbCiudad.getItems().clear();
         ArrayList<Ciudad> listaCiudades = new ArrayList<>();
@@ -200,13 +171,10 @@ public class AgregarDueñoController{
         System.out.println(d);
         System.out.println(duenioOG.getId());
         
-        //Se vuelve invisible el boton de guardado
         opGuardarDueño.setVisible(false);
         
-        //Se vuelve visible el boton de actualizar
         buttonActualizar.setVisible(true);
         
-        //Se cambia el titulo de la ventana
         lblAgregarDuenio.setText("Editar Dueño");
         
         //Se rellenan los campos

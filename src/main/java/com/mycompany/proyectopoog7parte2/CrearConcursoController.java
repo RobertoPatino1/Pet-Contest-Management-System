@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.mycompany.proyectopoog7parte2;
 
 import com.mycompany.modelo.Auspiciante;
 import com.mycompany.modelo.Ciudad;
 import com.mycompany.modelo.Concurso;
 import com.mycompany.modelo.Premio;
-import com.mycompany.modelo.TipoAnimalesConcurso;
+import com.mycompany.enums.TipoAnimalesConcurso;
 import utils.UtilDate;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -98,8 +94,8 @@ public class CrearConcursoController{
         // TODO
         //Se llenan los combos con los elementos de los enums
         cbTipoMascotasConcurso.getItems().setAll(TipoAnimalesConcurso.PERROS,TipoAnimalesConcurso.GATOS,TipoAnimalesConcurso.TODOS);
-        cbCiudadConcurso.getItems().setAll(Ciudad.cargarCiudades("archivos/ciudades.csv"));
-        cbAuspiciantesConcurso.getItems().setAll(Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser"));
+        cbCiudadConcurso.getItems().setAll(Ciudad.cargarCiudades());
+        cbAuspiciantesConcurso.getItems().setAll(Auspiciante.cargarListaAuspiciantes());
         
         colLugar.setCellValueFactory(new PropertyValueFactory<>("lugar"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
@@ -139,7 +135,7 @@ public class CrearConcursoController{
         try {
             //Se le asigna un id al concurso
 
-            int id = Concurso.cargarListaConcursos("archivos/concursos.ser").size()+1;
+            int id = Concurso.cargarListaConcursos().size()+1;
 
             //Se racuperan los datos del concurso ingresados
             TipoAnimalesConcurso tipoAnimalConcurso = cbTipoMascotasConcurso.getValue();
@@ -181,7 +177,7 @@ public class CrearConcursoController{
            
             
             //Se escribe el concurso en el archivo de concursos y se lo actualiza.
-            Concurso.actualizarArchivoConcursos(concursoGuardar, App.pathConcursos);
+            Concurso.actualizarArchivoConcursos(concursoGuardar);
             exito.show();
             //Se cambia de escena
             App.setRoot("administrarConcurso");
@@ -342,7 +338,7 @@ public class CrearConcursoController{
             System.out.println(concursoOG);
             
             //Entramos a la lista de concurso y accedemos al objeto con ese indice
-            ArrayList<Concurso> listaConcursos = Concurso.cargarListaConcursos(App.pathConcursos);
+            ArrayList<Concurso> listaConcursos = Concurso.cargarListaConcursos();
             
             //Se obtiene el concurso que sera actualizado
             Concurso concursoActualizar = listaConcursos.get(indice);
@@ -372,7 +368,7 @@ public class CrearConcursoController{
             //Se escribe el concurso actualizado en la lista
             //**************************************************************
             //Se actualiza la lista de concursos
-            Concurso.actualizarListaConcursos(listaConcursos, App.pathConcursos);
+            Concurso.actualizarListaConcursos(listaConcursos);
             
             //Le mostramos un aviso al usuario
             Alert confirmacion = new Alert(Alert.AlertType.INFORMATION,"Recuerde que este cambio no será aplicado a los elementos" +"\n"+"ya registrados en el sistema");

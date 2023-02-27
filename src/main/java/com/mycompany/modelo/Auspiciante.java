@@ -1,4 +1,5 @@
 package com.mycompany.modelo;
+import com.mycompany.proyectopoog7parte2.App;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -97,18 +98,15 @@ public class Auspiciante extends Persona implements Serializable{
     
     public static void generarArchivoAuspiciantes(String path){
         ArrayList<Auspiciante> listaAuspiciantes = new ArrayList<>();
-            //Se crean los auspiciantes
-            Auspiciante au1 = new Auspiciante(1, "Vet Cruz del Sur", "direccion1","11111111",Ciudad.cargarCiudades("archivos/ciudades.csv").get(0),"email1@gmail.com","webpage1.com");
-            Auspiciante au2 = new Auspiciante(2, "Dog Chow", "direccion2","22222222",Ciudad.cargarCiudades("archivos/ciudades.csv").get(1),"email2@gmail.com","webpage2.com");
-            Auspiciante au3 = new Auspiciante(3, "Dr Pet", "direccion3","33333333",Ciudad.cargarCiudades("archivos/ciudades.csv").get(2),"email3@gmail.com","webpage3.com");
-            Auspiciante au4 = new Auspiciante(4, "Patitas limpias", "direccion4","44444444",Ciudad.cargarCiudades("archivos/ciudades.csv").get(3),"email4@gmail.com","webpage4.com");
-            //Se agregan los auspiciantes
+            Auspiciante au1 = new Auspiciante(1, "Vet Cruz del Sur", "direccion1","11111111",Ciudad.cargarCiudades().get(0),"email1@gmail.com","webpage1.com");
+            Auspiciante au2 = new Auspiciante(2, "Dog Chow", "direccion2","22222222",Ciudad.cargarCiudades().get(1),"email2@gmail.com","webpage2.com");
+            Auspiciante au3 = new Auspiciante(3, "Dr Pet", "direccion3","33333333",Ciudad.cargarCiudades().get(2),"email3@gmail.com","webpage3.com");
+            Auspiciante au4 = new Auspiciante(4, "Patitas limpias", "direccion4","44444444",Ciudad.cargarCiudades().get(3),"email4@gmail.com","webpage4.com");
             listaAuspiciantes.add(au1);
             listaAuspiciantes.add(au2);
             listaAuspiciantes.add(au3);
             listaAuspiciantes.add(au4);
         try(ObjectOutputStream escritor = new ObjectOutputStream(new FileOutputStream(path))){
-            //Se escribe la lista con los auspiciantes creados
             escritor.writeObject(listaAuspiciantes);
         }catch(FileNotFoundException e){
             System.out.println("No se encontro el archivo");
@@ -121,13 +119,9 @@ public class Auspiciante extends Persona implements Serializable{
     
     
     
-    
-    
-    //Metodo para cargar la lista con auspiciantes
-    public static ArrayList<Auspiciante> cargarListaAuspiciantes(String path){
+    public static ArrayList<Auspiciante> cargarListaAuspiciantes(){
         ArrayList<Auspiciante> listaAuspiciantes = new ArrayList<>();
-        //Vamos a leer el archivo serializado
-        try(ObjectInputStream lector = new ObjectInputStream(new FileInputStream(path))){
+        try(ObjectInputStream lector = new ObjectInputStream(new FileInputStream(App.pathAuspiciantes))){
             listaAuspiciantes = (ArrayList<Auspiciante>)lector.readObject();
         }catch(FileNotFoundException e){
             System.out.println("No se ha encontrado el archivo");
@@ -143,14 +137,10 @@ public class Auspiciante extends Persona implements Serializable{
         
     }
     
-    //Metodo para escribir la lista de auspiciantes actualizada en el archivo serializado
-    public static void actualizarArchivoAuspiciantes(Auspiciante au,String path){
-        //Se obtiene la lista de auspiciantes con el metodo que la retorna
-        ArrayList<Auspiciante> listaAuspiciantes = cargarListaAuspiciantes(path);
-        //Se agrega al auspiciante pasado como parametro a la lista
+    public static void actualizarArchivoAuspiciantes(Auspiciante au){
+        ArrayList<Auspiciante> listaAuspiciantes = cargarListaAuspiciantes();
         listaAuspiciantes.add(au);
-        try(ObjectOutputStream escritor = new ObjectOutputStream(new FileOutputStream(path))){
-            //Se escribe la lista con los auspiciantes actualizada
+        try(ObjectOutputStream escritor = new ObjectOutputStream(new FileOutputStream(App.pathAuspiciantes))){
             escritor.writeObject(listaAuspiciantes);
         }catch(FileNotFoundException e){
             System.out.println("No se encontro el archivo");
@@ -161,20 +151,17 @@ public class Auspiciante extends Persona implements Serializable{
         }
     }
     
-    public static void actualizarListaAuspiciantes(ArrayList<Auspiciante> lista, String path){
+    public static void actualizarListaAuspiciantes(ArrayList<Auspiciante> lista){
         int i = 0;
-        //Se reescribe la lista
         ArrayList<Auspiciante> listaActualizada = new ArrayList<>();
         
-        try(ObjectOutputStream escritor = new ObjectOutputStream(new FileOutputStream(path))){
+        try(ObjectOutputStream escritor = new ObjectOutputStream(new FileOutputStream(App.pathAuspiciantes))){
             for(Auspiciante a:lista){
                 i++;
                 a.setId(i);
                 listaActualizada.add(a);
             }
-            //Una vez que se settean los ids, escribimos la lista
             
-           //Escribimos la nueva lista actualizada en el archivo serializado
            escritor.writeObject(listaActualizada);
         }catch(IOException e){
             System.out.println("Error al escribir: "+e);

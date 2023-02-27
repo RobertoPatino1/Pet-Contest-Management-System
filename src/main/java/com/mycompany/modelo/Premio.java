@@ -20,7 +20,7 @@ public class Premio implements Serializable{
         this.auspiciante = auspiciante;
     }
     
-    //Getters and setters
+
 
     public int getLugar() {
         return lugar;
@@ -46,7 +46,6 @@ public class Premio implements Serializable{
         this.auspiciante = auspiciante;
     }
     
-    //toString
     @Override
     public String toString(){
         return lugar+". "+descripcion+",auspicia: "+auspiciante;
@@ -65,11 +64,11 @@ public class Premio implements Serializable{
         }
     }
     
-    /*
-    //Metodo para escribir el archivo de premios
+    
+
     public static void generarArchivoPremios(String path){
         ArrayList<Premio> listaPremios = new ArrayList<>();
-        ArrayList<Auspiciante> listaAuspiciantes = Auspiciante.cargarListaAuspiciantes("archivos/auspiciantes.ser");
+        ArrayList<Auspiciante> listaAuspiciantes = Auspiciante.cargarListaAuspiciantes();
         listaPremios.add(new Premio(1, "$200 y productos Dog Chow", listaAuspiciantes.get(1)));
         listaPremios.add(new Premio(2, "$100 y productos Dog Chow", listaAuspiciantes.get(1)));
         listaPremios.add(new Premio(3, "50 y consulta gratis Dr Pet", listaAuspiciantes.get(2)));
@@ -84,10 +83,10 @@ public class Premio implements Serializable{
             System.out.println("Ha ocurrido un error inesperado");
         }
     }
-    */
     
     
-    //Metodo para leer el archivo serializado
+    
+
     public static ArrayList<Premio> cargarListaPremios(String path){
         ArrayList<Premio> listaPremios = new ArrayList<>();
         try(ObjectInputStream lector = new ObjectInputStream(new FileInputStream(path))){
@@ -103,7 +102,7 @@ public class Premio implements Serializable{
         return listaPremios;
     }
     
-    //Metodo para actualizar el archivo serializado con el nuevo premio
+
 
     public static void actualizarArchivoPremios(Premio pr,String path){
         ArrayList<Premio> listaPremios = cargarListaPremios(path);
